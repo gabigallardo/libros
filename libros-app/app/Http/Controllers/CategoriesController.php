@@ -29,12 +29,13 @@ class CategoriesController extends Controller
         return view('category.index', compact('categories'));
     }
 
-    /**
-     * Muestra el detalle de una categoría (Público para usuarios logueados).
-     */
     public function show(Category $category)
     {
-        return view('category.show', compact('category'));
+        // Carga los posts de la categoría, 9 por página
+        $posts = $category->posts()->paginate(9);
+
+        // Pasa la categoría y los posts paginados a la vista
+        return view('category.show', compact('category', 'posts'));
     }
 
     /**
