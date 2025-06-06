@@ -24,16 +24,26 @@
                 <a
                     href="{{ route('categories.index') }}"
                     class="text-blue-600 font-medium px-3 py-2 rounded-md text-sm
-           hover:bg-yellow-200 hover:text-blue-800
-           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-           transition-colors duration-200 ease-in-out">
+                           hover:bg-yellow-200 hover:text-blue-800
+                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                           transition-colors duration-200 ease-in-out">
                     Ver Categorías
                 </a>
 
+                @if (Auth::user() && Auth::user()->isAdmin())
+                <a
+                    href="{{ route('posts.create') }}"
+                    class="ms-4 text-green-600 font-medium px-3 py-2 rounded-md text-sm
+                               hover:bg-yellow-200 hover:text-green-800
+                               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500
+                               transition-colors duration-200 ease-in-out">
+                    Crear Post
+                </a>
+                @endif
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700
                                            bg-yellow-100 hover:bg-yellow-200 hover:text-blue-600
                                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
                                            transition-colors duration-200 ease-in-out">
@@ -77,5 +87,42 @@
     </div>
 
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                {{ __('Home') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
+                {{ __('Ver Categorías') }}
+            </x-responsive-nav-link>
+
+            @if (Auth::user() && Auth::user()->isAdmin())
+            <x-responsive-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
+                {{ __('Crear Post') }}
+            </x-responsive-nav-link>
+            @endif
+        </div>
+
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="px-4">
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    {{ __('Editar Perfil') }}
+                </x-responsive-nav-link>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Cerrar Sesión') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+        </div>
     </div>
 </nav>

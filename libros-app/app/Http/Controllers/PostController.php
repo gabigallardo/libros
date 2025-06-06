@@ -3,44 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category; // Importa el modelo Category
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        // Protegemos todas las rutas de posts, excepto la de mostrar un post individual
+        $this->middleware('auth');
+        $this->middleware(\App\Http\Middleware\AdminMiddleware::class)->except(['show']);
+    }
+
     public function index()
     {
-        $posts = Post::all();
+        // Podrías crear una vista para que el admin vea todos los posts
+        $posts = Post::latest()->paginate(15);
         return view('posts.index', compact('posts'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear un nuevo post.
      */
     public function create()
     {
-        return view('categories.create'); // Retorna la vista para crear un nuevo post
+        // Obtenemos todas las categorías para pasarlas al dropdown del formulario
+        $categories = Category::orderBy('name')->get();
+        return view('posts.create', compact('categories'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda el nuevo post en la base de datos.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'content' => 'required|string',
+            'poster' => 'nullable|url',
+            'stars' => 'required|integer|min:0|max:5',
+        ]);
+
+        Post::create($request->all());
+
+        return redirect()->route('posts.index')->with('success', 'Post creado exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function getShow($id)
+    public function show(Post $post)
     {
-        $post = Post::findOrFail($id); // Busca el post por ID o lanza un error 404 si no existe
-        return view('posts.show', ['post' => $post]);
+        return view('posts.show', compact('post'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */

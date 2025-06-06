@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory; // 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
-    use HasFactory; // Y esto
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -20,9 +20,10 @@ class Post extends Model
         'content',
         'poster',
         'habilitated',
-        'category_id', // Añade esta línea
+        'stars',
+        'likes',
+        'category_id',
     ];
-
 
     /**
      * Get the category that owns the Post

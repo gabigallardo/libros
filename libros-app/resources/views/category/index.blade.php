@@ -25,30 +25,40 @@
                     </div>
                     @endif
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="space-y-4">
                         @foreach ($categories as $category)
-                        <div class="bg-gray-100 p-4 rounded-lg shadow">
-                            <h2 class="font-bold text-lg flex items-center">
-                                <span class="material-icons mr-2">{{ $category->icon }}</span>
-                                {{ $category->name }}
-                            </h2>
-                            <p class="text-gray-600">{{ $category->description }}</p>
-                            <div class="mt-4 flex justify-end space-x-2">
-                                <a href="{{ route('categories.show', $category) }}" class="text-blue-500 hover:underline">Ver</a>
+                        <a href="{{ route('categories.show', $category) }}" class="block">
+                            <div class="bg-blue-400 hover:bg-blue-500 text-white border border-blue-400 p-6 rounded-md shadow-md hover:shadow-lg transition duration-200 cursor-pointer">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h2 class="text-xl font-semibold flex items-center">
+                                            @if($category->icon)
+                                            <span class="material-icons mr-2">{{ $category->icon }}</span>
+                                            @endif
+                                            {{ $category->name }}
+                                        </h2>
+                                        <p class="mt-1">{{ $category->description ?? 'Sin descripción' }}</p>
+                                    </div>
 
-                                {{-- Controles solo para administradores --}}
-                                @if(Auth::user()->isAdmin())
-                                <a href="{{ route('categories.edit', $category) }}" class="text-yellow-500 hover:underline">Editar</a>
-                                <form action="{{ route('categories.destroy', $category) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta categoría?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
-                                </form>
-                                @endif
+                                    @if(Auth::user()->isAdmin())
+                                    <div class="flex flex-col items-end space-y-1 ml-4">
+                                        <a href="{{ route('categories.edit', $category) }}"
+                                            class="text-sm text-yellow-100 hover:text-yellow-300 underline">Editar</a>
+
+                                        <form action="{{ route('categories.destroy', $category) }}" method="POST"
+                                            onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta categoría?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-sm text-red-100 hover:text-red-300 underline">Eliminar</button>
+                                        </form>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
+                        </a>
                         @endforeach
                     </div>
+
                 </div>
             </div>
         </div>
