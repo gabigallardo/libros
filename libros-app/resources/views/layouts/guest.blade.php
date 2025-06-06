@@ -20,7 +20,7 @@
     <div class="w-full max-w-md p-8 bg-white shadow-lg rounded-xl">
         <div class="flex justify-center mb-6">
             <a href="/">
-                <x-application-logo class="w-24 h-24 rounded-full" />
+                <x-application-logo class=" rounded-full" />
             </a>
         </div>
         <div>

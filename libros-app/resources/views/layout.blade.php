@@ -20,8 +20,8 @@
             <nav>
                 <ul class="flex space-x-6 text-blue-700 font-medium">
                     <li><a href="/" class="hover:underline">Inicio</a></li>
-                    <li><a href="/category" class="hover:underline">Ver Categorías</a></li>
-                    <li><a href="/category/create" class="hover:underline">Añadir Post</a></li>
+                    <li><a href="/categories" class="hover:underline">Ver Categorías</a></li>
+                    <li><a href="/categories/create" class="hover:underline">Añadir Post</a></li>
                     <li><a href="/login" class="hover:underline">Login</a></li>
                 </ul>
             </nav>

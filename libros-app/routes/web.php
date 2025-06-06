@@ -8,6 +8,14 @@ use App\Http\Controllers\PostController;
 
 // Modifica esta línea
 Route::get('/', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
+Route::get('/', function () {
+    return view('welcome');
+})->middleware('guest')->name('welcome');
+
+
+// 2. Ruta para usuarios autenticados (protegida)
+// Modificamos la ruta anterior a "/home"
+Route::get('/home', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
 
 Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');

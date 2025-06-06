@@ -21,7 +21,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('category.create'); // Retorna la vista para crear un nuevo post
+        return view('categories.create'); // Retorna la vista para crear un nuevo post
     }
 
     /**
