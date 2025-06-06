@@ -3,31 +3,25 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\PostController;
 
-// Modifica esta línea
-Route::get('/', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
+// Ruta para la página de bienvenida para usuarios no autenticados
 Route::get('/', function () {
     return view('welcome');
 })->middleware('guest')->name('welcome');
 
+// Rutas para usuarios autenticados
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// 2. Ruta para usuarios autenticados (protegida)
-// Modificamos la ruta anterior a "/home"
-Route::get('/home', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
+    // Rutas de recursos para Posts
+    Route::resource('posts', PostController::class);
 
-Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
-Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
+    // Rutas de recursos para Categories
+    Route::resource('categories', CategoriesController::class);
 
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::get('/posts/{id}/edit', [PostController::class, 'getEdit'])->name('posts.edit');
-Route::get('/posts/{id}', [PostController::class, 'getShow'])->name('posts.show');
-// Añade las rutas de los posts
-
-
-Route::middleware('auth')->group(function () {
+    // Rutas del perfil de usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

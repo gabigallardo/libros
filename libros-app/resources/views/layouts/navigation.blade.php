@@ -23,10 +23,10 @@
 
                 <a
                     href="{{ route('categories.index') }}"
-                    class="text-blue-600 font-medium px-3 py-2 rounded-md text-sm 
-                           hover:bg-yellow-200 hover:text-blue-800 
-                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                           transition-colors duration-200 ease-in-out">
+                    class="text-blue-600 font-medium px-3 py-2 rounded-md text-sm
+           hover:bg-yellow-200 hover:text-blue-800
+           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+           transition-colors duration-200 ease-in-out">
                     Ver Categorías
                 </a>
 
