@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->text('poster')->nullable();
-            $table->boolean('active')->default(true);
+            $table->string('poster')->nullable();
+            $table->boolean('habilitated')->default(false);
             $table->integer('stars')->default(0);
             $table->integer('likes')->default(0);
             $table->timestamps();

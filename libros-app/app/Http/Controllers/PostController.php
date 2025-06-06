@@ -12,7 +12,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -20,7 +21,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create'); // Retorna la vista para crear un nuevo post
     }
 
     /**
@@ -34,17 +35,19 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function getShow($id)
     {
-        //
+        $post = Post::findOrFail($id); // Busca el post por ID o lanza un error 404 si no existe
+        return view('posts.show', ['post' => $post]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function getEdit($id)
     {
-        //
+        $post = Post::findOrFail($id); // Busca el post o lanza 404 si no existe
+        return view('posts.edit', ['post' => $post]); // Pasa el post a la vista de edición
     }
 
     /**

@@ -1,1 +1,0 @@
-<h1>Vista detalle del post {{ $id }}</h1>

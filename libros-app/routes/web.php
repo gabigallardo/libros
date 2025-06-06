@@ -6,18 +6,18 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 
-Route::get('/', [HomeController::class, 'index']);
+// Modifica esta línea
+Route::get('/', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
 
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
-Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
 
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::get('/posts/{id}/edit', [PostController::class, 'getEdit'])->name('posts.edit');
+Route::get('/posts/{id}', [PostController::class, 'getShow'])->name('posts.show');
+// Añade las rutas de los posts
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
