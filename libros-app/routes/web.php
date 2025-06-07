@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -9,7 +10,17 @@ use App\Http\Controllers\SearchController;
 
 // Ruta para la página de bienvenida para usuarios no autenticados
 Route::get('/', function () {
-    return view('welcome');
+    $mostLikedPosts = Post::withCount('likers')
+        ->orderBy('likers_count', 'desc')
+        ->limit(3)
+        ->get();
+
+    $latestPosts = Post::latest()->limit(3)->get();
+
+    return view('welcome', [
+        'mostLikedPosts' => $mostLikedPosts,
+        'latestPosts' => $latestPosts,
+    ]);
 })->middleware('guest')->name('welcome');
 
 // Rutas para usuarios autenticados

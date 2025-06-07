@@ -17,7 +17,6 @@
 
 <body class="font-sans text-gray-900 antialiased">
     <div class="min-h-screen bg-pattern">
-        {{-- LA LÍNEA QUE FALTABA ESTÁ AQUÍ --}}
         @include('layouts.navigation')
 
         @isset($header)
@@ -32,6 +31,7 @@
             {{ $slot }}
         </main>
     </div>
+    @include('layouts.partials.footer')
 </body>
 
 </html>
