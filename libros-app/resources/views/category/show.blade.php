@@ -10,42 +10,44 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if($posts->count())
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @foreach ($posts as $post)
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
-                    <img class="h-48 w-full object-cover" src="{{ $post->poster ?? 'https://via.placeholder.com/400x300' }}" alt="Poster del post">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="font-bold text-lg mb-2">{{ $post->title }}</h3>
-                        <p class="text-gray-600 text-sm flex-grow">
-                            {{-- Tomamos solo la primera oración del contenido --}}
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col group">
+                    <div class="aspect-[2/3] w-full overflow-hidden">
+                        <img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" src="{{ $post->poster ?? 'https://via.placeholder.com/400x600' }}" alt="Poster del libro {{ $post->title }}">
+                    </div>
+
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="font-bold text-base mb-2 truncate" title="{{ $post->title }}">{{ $post->title }}</h3>
+                        <p class="text-gray-600 text-xs flex-grow">
                             {{ Str::before(e($post->content), '.') }}.
                         </p>
-                        <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="mt-3 pt-3 border-t border-gray-200">
                             <div class="flex justify-between items-center">
-                                {{-- Estrellas con emojis --}}
-                                <div class="flex items-center">
+                                <div class="flex items-center" title="{{ $post->stars }} de 5 estrellas">
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($i <=$post->stars)
-                                        <span class="text-yellow-400">⭐</span>
+                                        <span class="text-yellow-400">★</span>
                                         @else
-                                        <span class="text-gray-300">⭐</span>
+                                        <span class="text-gray-300">☆</span>
                                         @endif
                                         @endfor
                                 </div>
-                                {{-- Likes con emoji y contador --}}
-                                <div class="flex items-center text-gray-500">
-                                    <span class="mr-1">👍</span>
-                                    <span>{{ $post->likes }}</span>
-                                </div>
+                                <form action="{{ route('posts.like', $post) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="flex items-center text-gray-600 font-semibold text-sm focus:outline-none">
+                                        <span class="mr-1 text-lg {{ $post->isLikedByUser(Auth::user()) ? 'text-red-500' : 'text-gray-400' }}">👍</span>
+                                        <span>{{ $post->likers()->count() }}</span>
+                                    </button>
+                                </form>
                             </div>
-                            <a href="{{ route('posts.show', $post) }}" class="block text-center mt-4 bg-indigo-500 text-white font-semibold py-2 rounded-lg hover:bg-indigo-600 w-full">Leer Reseña</a>
+                            <a href="{{ route('posts.show', $post) }}" class="block text-center mt-3 bg-indigo-500 text-white font-semibold py-2 px-3 text-sm rounded-lg hover:bg-indigo-600 w-full transition">Leer Reseña</a>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
 
-            {{-- Links de paginación --}}
             <div class="mt-8">
                 {{ $posts->links() }}
             </div>

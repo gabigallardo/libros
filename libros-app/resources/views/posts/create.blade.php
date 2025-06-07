@@ -17,6 +17,10 @@
                         </div>
 
                         <div class="mb-4">
+                            <label for="author_name" class="block text-gray-700 text-sm font-bold mb-2">Nombre del Autor:</label>
+                            <input type="text" name="author_name" id="author_name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
+                        </div>
+                        <div class="mb-4">
                             <label for="category_id" class="block text-gray-700 text-sm font-bold mb-2">Categoría:</label>
                             <select name="category_id" id="category_id" class="shadow border rounded w-full py-2 px-3" required>
                                 <option value="">Selecciona una categoría</option>

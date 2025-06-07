@@ -11,8 +11,11 @@ class PostFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(5),
+            'author_name' => $this->faker->name(),
             'content' => $this->faker->paragraphs(3, true),
-            'category_id' => Category::inRandomOrder()->first()->id, // Asigna una categoría aleatoria
+            'category_id' => Category::inRandomOrder()->first()->id,
+            'stars' => $this->faker->numberBetween(1, 5), // 
+            'likes' => $this->faker->numberBetween(0, 100), // 
             'habilitated' => true,
         ];
     }

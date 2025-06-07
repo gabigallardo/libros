@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Category; // Importa el modelo Category
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Importa Auth
 
 class PostController extends Controller
 {
@@ -39,6 +40,7 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'author_name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'content' => 'required|string',
             'poster' => 'nullable|url',
@@ -52,7 +54,15 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        // Carga los posts de la misma categoría para la sección "relacionados"
+        // Excluimos el post actual y tomamos hasta 3 posts de forma aleatoria.
+        $relatedPosts = Post::where('category_id', $post->category_id)
+            ->where('id', '!=', $post->id)
+            ->inRandomOrder()
+            ->limit(3)
+            ->get();
+
+        return view('posts.show', compact('post', 'relatedPosts'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -77,5 +87,21 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+    public function toggleLike(Post $post)
+    {
+        $user = Auth::user();
+
+        $user->likes()->toggle($post->id);
+
+        return back(); // Redirige al usuario a la página anterior
+    }
+
+
+    public function likedPosts()
+    {
+        $posts = Auth::user()->likes()->paginate(9);
+
+        return view('posts.liked', compact('posts'));
     }
 }

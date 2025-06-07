@@ -62,6 +62,9 @@
                                 {{ __('Editar Perfil') }}
                             </x-dropdown-link>
 
+                            <x-dropdown-link :href="route('posts.liked')">
+                                {{ __('Publicaciones Likeadas') }}
+                            </x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')"

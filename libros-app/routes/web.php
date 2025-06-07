@@ -26,5 +26,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+// ... en routes/web.php dentro del grupo 'auth'
 
+// Ruta para manejar el dar/quitar like
+Route::post('/posts/{post}/like', [PostController::class, 'toggleLike'])->name('posts.like');
+
+// Ruta para mostrar las publicaciones que le gustaron al usuario
+Route::get('/liked-posts', [PostController::class, 'likedPosts'])->name('posts.liked');
 require __DIR__ . '/auth.php';
