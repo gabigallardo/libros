@@ -31,12 +31,24 @@
                                             @endfor
                                     </div>
                                 </div>
+                                {{-- Formulario y Botón de Like mejorado --}}
                                 <form action="{{ route('posts.like', $post) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="flex items-center text-gray-600 font-semibold text-sm focus:outline-none">
-                                        <span class="mr-1 text-lg {{ $post->isLikedByUser(Auth::user()) ? 'text-red-500' : 'text-gray-400' }}">👍</span>
-                                        <span>{{ $post->likers()->count() }}</span>
+                                    @if($post->isLikedByUser(Auth::user()))
+                                    {{-- Estado: Ya le diste Me Gusta --}}
+                                    <button type="submit"
+                                        class="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                        <span class="material-icons">thumb_up</span>
+                                        <span class="font-semibold">Te gusta ({{ $post->likers()->count() }})</span>
                                     </button>
+                                    @else
+                                    {{-- Estado: Aún no le diste Me Gusta --}}
+                                    <button type="submit"
+                                        class="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                                        <span class="material-icons-outlined">thumb_up</span>
+                                        <span class="font-semibold">Me gusta ({{ $post->likers()->count() }})</span>
+                                    </button>
+                                    @endif
                                 </form>
                             </div>
                         </div>
