@@ -3,52 +3,78 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; // Asegúrate de que esto esté
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB; // Y también esto
 
 class CategoriesController extends Controller
 {
     /**
-     * Aplica el middleware de administrador a todos los métodos EXCEPTO a index y show.
+     * Aplica el middleware.
      */
     public function __construct()
     {
-        // Todos los usuarios logueados pueden ver el listado y el detalle.
         $this->middleware('auth');
-
-        // Solo los administradores pueden crear, guardar, editar, actualizar y eliminar.
         $this->middleware(\App\Http\Middleware\AdminMiddleware::class)->except(['index', 'show']);
     }
 
     /**
-     * Muestra la lista de categorías (Público para usuarios logueados).
+     * Muestra la lista de categorías con opción de ordenamiento.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
+        $sort = $request->query('sort');
+        $query = Category::query();
+
+        if ($sort === 'posts_count') {
+            // Ordenar por la cantidad de posts.
+            $query->withCount('posts')->orderBy('posts_count', 'desc');
+        } elseif ($sort === 'likes') {
+            // Ordenar por la cantidad total de 'me gusta'.
+            // CORRECCIÓN: Usamos count(*) en lugar de count(post_user.id)
+            $query->withCount(['posts as total_likes' => function ($query) {
+                $query->select(DB::raw('count(*) as likes_sum'))
+                    ->join('post_user', 'posts.id', '=', 'post_user.post_id');
+            }])->orderBy('total_likes', 'desc');
+        }
+
+        $categories = $query->get();
+
         return view('category.index', compact('categories'));
     }
 
-    public function show(Category $category)
+    // ... (el resto de los métodos: show, create, store, etc., se quedan como están)
+    public function show(Category $category, Request $request)
     {
-        // Carga los posts de la categoría, 9 por página
-        $posts = $category->posts()->paginate(9);
+        $sort = $request->query('sort');
 
-        // Pasa la categoría y los posts paginados a la vista
+        // Empezamos la consulta de posts para esta categoría
+        $postsQuery = $category->posts();
+
+        if ($sort === 'stars') {
+            // Ordenar por la columna 'stars' de mayor a menor
+            $postsQuery->orderBy('stars', 'desc');
+        } elseif ($sort === 'likes') {
+            // Ordenar por la cantidad de 'me gusta'.
+            // withCount('likers') cuenta los registros en la relación 'likers'
+            // y crea una columna temporal 'likers_count'.
+            $postsQuery->withCount('likers')->orderBy('likers_count', 'desc');
+        } else {
+            // Orden por defecto: los más nuevos primero
+            $postsQuery->latest();
+        }
+
+        // Paginamos los resultados y
+        // con appends() nos aseguramos de que los links de paginación
+        // mantengan el criterio de ordenamiento.
+        $posts = $postsQuery->paginate(9)->appends($request->query());
+
         return view('category.show', compact('category', 'posts'));
     }
-
-    /**
-     * Muestra el formulario para crear una nueva categoría (Solo para Admins).
-     */
     public function create()
     {
         return view('category.create');
     }
-
-    /**
-     * Guarda una nueva categoría en la base de datos (Solo para Admins).
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -66,18 +92,10 @@ class CategoriesController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Categoría creada exitosamente.');
     }
-
-    /**
-     * Muestra el formulario para editar la categoría (Solo para Admins).
-     */
     public function edit(Category $category)
     {
         return view('category.edit', compact('category'));
     }
-
-    /**
-     * Actualiza la categoría en la base de datos (Solo para Admins).
-     */
     public function update(Request $request, Category $category)
     {
         $request->validate([
@@ -95,10 +113,6 @@ class CategoriesController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Categoría actualizada exitosamente.');
     }
-
-    /**
-     * Elimina la categoría de la base de datos (Solo para Admins).
-     */
     public function destroy(Category $category)
     {
         $category->delete();

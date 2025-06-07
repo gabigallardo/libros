@@ -31,7 +31,6 @@
                                             @endfor
                                     </div>
                                 </div>
-                                {{-- Formulario y Botón de Like mejorado --}}
                                 <form action="{{ route('posts.like', $post) }}" method="POST">
                                     @csrf
                                     @if($post->isLikedByUser(Auth::user()))

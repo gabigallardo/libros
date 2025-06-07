@@ -1,5 +1,5 @@
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col group">
-    {{-- Imagen del Post --}}
+    {{-- Imagen de la reseña --}}
     <a href="{{ route('posts.show', $post) }}" class="aspect-[2/3] w-full overflow-hidden">
         <img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
             src="{{ $post->poster ?? 'https://via.placeholder.com/400x600' }}"

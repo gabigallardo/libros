@@ -24,6 +24,23 @@
                     </div>
                     @endif
 
+                    <div class="flex items-center space-x-4 mb-6 pb-4 border-b">
+                        <span class="font-semibold text-gray-700">Ordenar por:</span>
+                        <a href="{{ route('categories.index') }}"
+                            class="px-4 py-2 text-sm font-medium rounded-md {{ !request()->query('sort') ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }}">
+                            Por defecto
+                        </a>
+                        <a href="{{ route('categories.index', ['sort' => 'posts_count']) }}"
+                            class="px-4 py-2 text-sm font-medium rounded-md {{ request()->query('sort') == 'posts_count' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }}">
+                            Más Posts
+                        </a>
+                        <a href="{{ route('categories.index', ['sort' => 'likes']) }}"
+                            class="px-4 py-2 text-sm font-medium rounded-md {{ request()->query('sort') == 'likes' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }}">
+                            Más Populares (Likes)
+                        </a>
+                    </div>
+
+
                     <div class="space-y-4">
                         @foreach ($categories as $category)
                         <div class="relative bg-blue-400 text-white border border-blue-400 p-6 rounded-md shadow-md hover:bg-blue-500 hover:shadow-lg transition duration-200">

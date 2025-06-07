@@ -10,7 +10,24 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if($posts->count())
-            {{-- Usamos el nuevo parcial dentro del grid --}}
+
+
+            <div class="flex items-center space-x-4 mb-6 pb-4 border-b">
+                <span class="font-semibold text-gray-700">Ordenar por:</span>
+                <a href="{{ route('categories.show', $category) }}"
+                    class="px-4 py-2 text-sm font-medium rounded-md {{ !request()->query('sort') ? 'bg-blue-400 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }}">
+                    Más Recientes
+                </a>
+                <a href="{{ route('categories.show', ['category' => $category, 'sort' => 'stars']) }}"
+                    class="px-4 py-2 text-sm font-medium rounded-md {{ request()->query('sort') == 'stars' ? 'bg-blue-400 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }}">
+                    Mejor Calificados
+                </a>
+                <a href="{{ route('categories.show', ['category' => $category, 'sort' => 'likes']) }}"
+                    class="px-4 py-2 text-sm font-medium rounded-md {{ request()->query('sort') == 'likes' ? 'bg-blue-400 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }}">
+                    Más Likeados
+                </a>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @foreach ($posts as $post)
                 @include('posts.partials.post-card', ['post' => $post])
