@@ -54,21 +54,36 @@ class PostController extends Controller
         return view('posts.show', compact('post', 'relatedPosts'));
     }
 
-    public function getEdit($id)
+    public function edit(Post $post)
     {
-        $post = Post::findOrFail($id);
-        return view('posts.edit', ['post' => $post]);
+        $categories = Category::orderBy('name')->get();
+        return view('posts.edit', compact('post', 'categories'));
     }
 
     public function update(Request $request, Post $post)
     {
-        // Lógica de actualización
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'author_name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'content' => 'required|string',
+            'poster' => 'nullable|url',
+            'stars' => 'required|integer|min:0|max:5',
+        ]);
+
+        $post->update($validatedData);
+
+        return redirect()->route('posts.show', $post)->with('success', '¡Reseña actualizada exitosamente!');
     }
 
     public function destroy(Post $post)
     {
-        // Lógica de eliminación
+        $post->delete();
+
+        // Tras borrar, lo mejor es llevar al admin a una página que siga existiendo.
+        return redirect()->route('home')->with('success', '¡Reseña eliminada exitosamente!');
     }
+
 
     public function toggleLike(Post $post)
     {

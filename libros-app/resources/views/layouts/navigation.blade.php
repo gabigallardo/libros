@@ -8,7 +8,7 @@
             </div>
 
             <div class="flex-1 flex justify-center px-6">
-                <form action="#" method="GET" class="w-full max-w-md">
+                <form action="{{ route('search') }}" method="GET" class="w-full max-w-md">
                     <div class="relative">
                         <input
                             type="search"

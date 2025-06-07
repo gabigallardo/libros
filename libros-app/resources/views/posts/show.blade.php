@@ -21,36 +21,60 @@
                         <div class="p-4 bg-white rounded-lg shadow-sm">
                             <h3 class="font-bold text-gray-800 text-lg border-b pb-2 mb-3">Detalles de la Reseña</h3>
                             <div class="space-y-3 text-sm">
-                                <p class="flex items-center"><span class="material-icons mr-2 text-gray-500">person</span><strong>Autor:</strong><span class="ml-auto text-gray-700">{{ $post->author_name }}</span></p>
-                                <p class="flex items-center"><span class="material-icons mr-2 text-gray-500">category</span><strong>Categoría:</strong><a href="{{ route('categories.show', $post->category) }}" class="ml-auto text-blue-500 hover:underline">{{ $post->category->name }}</a></p>
+                                <p class="flex items-center">
+                                    <span class="material-icons mr-2 text-gray-500">person</span>
+                                    <strong>Autor:</strong>
+                                    <span class="ml-auto text-gray-700">{{ $post->author_name }}</span>
+                                </p>
+                                <p class="flex items-center">
+                                    <span class="material-icons mr-2 text-gray-500">category</span>
+                                    <strong>Categoría:</strong>
+                                    <a href="{{ route('categories.show', $post->category) }}" class="ml-auto text-blue-500 hover:underline">{{ $post->category->name }}</a>
+                                </p>
                                 <div class="flex items-center" title="{{ $post->stars }} de 5 estrellas">
-                                    <span class="material-icons mr-2 text-gray-500">grade</span><strong class="mr-2">Calificación:</strong>
+                                    <span class="material-icons mr-2 text-gray-500">grade</span>
+                                    <strong class="mr-2">Calificación:</strong>
                                     <div class="ml-auto">
                                         @for ($i = 1; $i <= 5; $i++)
                                             <span class="text-lg {{ $i <= $post->stars ? 'text-yellow-400' : 'text-gray-300' }}">★</span>
                                             @endfor
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="mt-4">
                                 <form action="{{ route('posts.like', $post) }}" method="POST">
                                     @csrf
                                     @if($post->isLikedByUser(Auth::user()))
-                                    {{-- Estado: Ya le diste Me Gusta --}}
-                                    <button type="submit"
-                                        class="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                    <button type="submit" class="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
                                         <span class="material-icons">thumb_up</span>
                                         <span class="font-semibold">Te gusta ({{ $post->likers()->count() }})</span>
                                     </button>
                                     @else
-                                    {{-- Estado: Aún no le diste Me Gusta --}}
-                                    <button type="submit"
-                                        class="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                                    <button type="submit" class="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
                                         <span class="material-icons-outlined">thumb_up</span>
                                         <span class="font-semibold">Me gusta ({{ $post->likers()->count() }})</span>
                                     </button>
                                     @endif
                                 </form>
                             </div>
+
+                            @if (Auth::user() && Auth::user()->isAdmin())
+                            <div class="mt-4 pt-4 border-t border-gray-200 flex items-center space-x-2">
+                                <a href="{{ route('posts.edit', $post) }}" class="flex-1 text-center px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition">
+                                    Editar
+                                </a>
+                                <form action="{{ route('posts.destroy', $post) }}" method="POST" class="flex-1" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta reseña? Esta acción no se puede deshacer.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-full px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                            @endif
                         </div>
+
                     </div>
                 </div>
 

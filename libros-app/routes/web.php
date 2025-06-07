@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SearchController;
 
 // Ruta para la página de bienvenida para usuarios no autenticados
 Route::get('/', function () {
@@ -14,6 +15,7 @@ Route::get('/', function () {
 // Rutas para usuarios autenticados
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
 
     // Rutas de recursos para Posts
     Route::resource('posts', PostController::class);
