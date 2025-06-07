@@ -46,4 +46,10 @@ Route::post('/posts/{post}/like', [PostController::class, 'toggleLike'])->name('
 
 // Ruta para mostrar las publicaciones que le gustaron al usuario
 Route::get('/liked-posts', [PostController::class, 'likedPosts'])->name('posts.liked');
+
+use App\Http\Controllers\CommentController;
+
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
+    ->middleware('auth')
+    ->name('posts.comments.store');
 require __DIR__ . '/auth.php';

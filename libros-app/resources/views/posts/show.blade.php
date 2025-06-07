@@ -102,6 +102,53 @@
                         </div>
                     </div>
                     @endif
+                    <div class="mt-16">
+                        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6">Comentarios</h2>
+
+                            {{-- Formulario para añadir un nuevo comentario --}}
+                            <form action="{{ route('posts.comments.store', $post) }}" method="POST">
+                                @csrf
+                                <div class="mb-4">
+                                    <textarea name="content" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Escribe tu comentario aquí..."></textarea>
+                                    @error('content')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700">
+                                        Publicar Comentario
+                                    </button>
+                                </div>
+                            </form>
+
+                            {{-- Lista de comentarios existentes --}}
+                            <div class="mt-8 space-y-6">
+                                @forelse ($post->comments as $comment)
+                                <div class="flex space-x-4">
+                                    <div class="flex-shrink-0">
+                                        {{-- Placeholder para avatar de usuario --}}
+                                        <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">
+                                            {{ strtoupper(substr($comment->user->name, 0, 1)) }}
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <div class="flex justify-between items-center">
+                                            <p class="font-bold text-gray-900">{{ $comment->user->name }}</p>
+                                            <p class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
+                                        </div>
+                                        <p class="text-gray-700 mt-1">
+                                            {{ $comment->content }}
+                                        </p>
+                                    </div>
+                                </div>
+                                @empty
+                                <p class="text-center text-gray-500">Aún no hay comentarios. ¡Sé el primero en opinar!</p>
+                                @endforelse
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
             </div>

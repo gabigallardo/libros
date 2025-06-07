@@ -47,4 +47,8 @@ class Post extends Model
     {
         return $this->likers()->where('user_id', $user->id)->exists();
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest(); // Usamos latest() para que los más nuevos aparezcan primero
+    }
 }
