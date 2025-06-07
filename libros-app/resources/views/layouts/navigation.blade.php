@@ -33,8 +33,8 @@
                 @if (Auth::user() && Auth::user()->isAdmin())
                 <a
                     href="{{ route('posts.create') }}"
-                    class="ms-4 text-green-600 font-medium px-3 py-2 rounded-md text-sm
-                               hover:bg-yellow-200 hover:text-green-800
+                    class="ms-4 text-blue-600 font-medium px-3 py-2 rounded-md text-sm
+                               hover:bg-yellow-200 hover:text-blue-700
                                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500
                                transition-colors duration-200 ease-in-out">
                     Crear Post

@@ -102,11 +102,12 @@
                         </div>
                     </div>
                     @endif
+
+                    {{-- SECCIÓN DE COMENTARIOS --}}
                     <div class="mt-16">
                         <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
                             <h2 class="text-2xl font-bold text-gray-800 mb-6">Comentarios</h2>
 
-                            {{-- Formulario para añadir un nuevo comentario --}}
                             <form action="{{ route('posts.comments.store', $post) }}" method="POST">
                                 @csrf
                                 <div class="mb-4">
@@ -122,24 +123,53 @@
                                 </div>
                             </form>
 
-                            {{-- Lista de comentarios existentes --}}
                             <div class="mt-8 space-y-6">
                                 @forelse ($post->comments as $comment)
-                                <div class="flex space-x-4">
+                                {{-- CÓDIGO ACTUALIZADO PARA CADA COMENTARIO --}}
+                                <div x-data="{ editing: false }" class="flex space-x-4" id="comment-{{ $comment->id }}">
                                     <div class="flex-shrink-0">
-                                        {{-- Placeholder para avatar de usuario --}}
                                         <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">
                                             {{ strtoupper(substr($comment->user->name, 0, 1)) }}
                                         </div>
                                     </div>
                                     <div class="flex-grow">
-                                        <div class="flex justify-between items-center">
-                                            <p class="font-bold text-gray-900">{{ $comment->user->name }}</p>
-                                            <p class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
+                                        {{-- VISTA NORMAL DEL COMENTARIO --}}
+                                        <div x-show="!editing">
+                                            <div class="flex justify-between items-center">
+                                                <p class="font-bold text-gray-900">{{ $comment->user->name }}</p>
+                                                <div class="flex items-center space-x-2 text-xs">
+                                                    <p class="text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
+
+                                                    @can('update', $comment)
+                                                    <button x-on:click="editing = true; $nextTick(() => $refs.editField.focus())" class="text-blue-500 hover:underline">Editar</button>
+                                                    @endcan
+
+                                                    @can('delete', $comment)
+                                                    <form action="{{ route('comments.destroy', $comment) }}" method="POST" onsubmit="return confirm('¿Estás seguro?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
+                                                    </form>
+                                                    @endcan
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-700 mt-1">
+                                                {{ $comment->content }}
+                                            </p>
                                         </div>
-                                        <p class="text-gray-700 mt-1">
-                                            {{ $comment->content }}
-                                        </p>
+
+                                        {{-- VISTA DE EDICIÓN --}}
+                                        <div x-show="editing" x-cloak style="display: none !important;">
+                                            <form action="{{ route('comments.update', $comment) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <textarea name="content" x-ref="editField" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" rows="3">{{ $comment->content }}</textarea>
+                                                <div class="mt-2 space-x-2 text-right">
+                                                    <button type="button" x-on:click="editing = false" class="text-sm text-gray-600 hover:underline">Cancelar</button>
+                                                    <button type="submit" class="px-3 py-1 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 text-sm">Guardar Cambios</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                                 @empty

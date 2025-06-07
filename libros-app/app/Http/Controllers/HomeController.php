@@ -17,11 +17,11 @@ class HomeController extends Controller
         // Obtener las 3 publicaciones con más "Me gusta"
         $mostLikedPosts = Post::withCount('likers')
             ->orderBy('likers_count', 'desc')
-            ->limit(3)
+            ->limit(4)
             ->get();
 
         // Obtener las 3 últimas publicaciones
-        $latestPosts = Post::latest()->limit(3)->get();
+        $latestPosts = Post::latest()->limit(4)->get();
 
         //  Pasar los datos a la vista
         return view('home', [

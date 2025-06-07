@@ -20,7 +20,8 @@
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-blue-500 pl-4">
                     Las Reseñas Más Populares
                 </h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-24">
+                {{-- CAMBIO AQUÍ: de lg:grid-cols-3 a lg:grid-cols-4 y de gap-8 a gap-6 --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($mostLikedPosts as $post)
                     @include('posts.partials.post-card', ['post' => $post])
                     @endforeach
@@ -34,7 +35,8 @@
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-indigo-500 pl-4">
                     Novedades: Últimas Reseñas
                 </h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-24">
+                {{-- CAMBIO AQUÍ: de lg:grid-cols-3 a lg:grid-cols-4 y de gap-8 a gap-6 --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($latestPosts as $post)
                     @include('posts.partials.post-card', ['post' => $post])
                     @endforeach

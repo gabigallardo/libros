@@ -52,4 +52,10 @@ use App\Http\Controllers\CommentController;
 Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
     ->middleware('auth')
     ->name('posts.comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('comments.destroy');
+Route::put('/comments/{comment}', [CommentController::class, 'update'])
+    ->middleware('auth')
+    ->name('comments.update');
 require __DIR__ . '/auth.php';
