@@ -37,7 +37,6 @@
 
                         <div class="mt-4">
                             <label for="content" class="block text-gray-700 text-sm font-bold mb-2">Contenido de la Reseña:</label>
-                            {{-- CORRECCIÓN AQUÍ: Usamos $post->content para rellenar con el valor actual --}}
                             <textarea name="content" id="content" rows="8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>{{ old('content', $post->content) }}</textarea>
                         </div>
 

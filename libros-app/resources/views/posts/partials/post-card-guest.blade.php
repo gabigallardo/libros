@@ -1,5 +1,4 @@
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex flex-col group">
-    {{-- La imagen y el título ahora apuntan al login --}}
     <a href="{{ route('login') }}" class="aspect-[2/3] w-full overflow-hidden">
         <img class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
             src="{{ $post->poster ?? 'https://via.placeholder.com/400x600' }}"
@@ -20,9 +19,7 @@
                 @endfor
         </div>
 
-        {{-- Acciones para invitados: ambos botones llevan al login --}}
         <div class="mt-auto pt-3 border-t border-gray-200 flex items-center justify-between space-x-2">
-            {{-- El botón de "Like" ahora es un enlace al login --}}
             <a href="{{ route('login') }}" class="flex items-center space-x-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
                 <span class="material-icons-outlined">thumb_up</span>
                 <span>{{ $post->likers()->count() }}</span>

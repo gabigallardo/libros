@@ -29,7 +29,7 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'author_name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
@@ -38,9 +38,15 @@ class PostController extends Controller
             'stars' => 'required|integer|min:0|max:5',
         ]);
 
-        Post::create($request->all());
 
-        return redirect()->route('posts.index')->with('success', 'Post creado exitosamente.');
+        $postData = $validatedData;
+
+
+        $postData['habilitated'] = $request->has('habilitated');
+
+        Post::create($postData);
+
+        return redirect()->route('home')->with('success', 'Post creado exitosamente.');
     }
 
     public function show(Post $post)
@@ -71,7 +77,11 @@ class PostController extends Controller
             'stars' => 'required|integer|min:0|max:5',
         ]);
 
-        $post->update($validatedData);
+        $postData = $validatedData;
+
+        $postData['habilitated'] = $request->has('habilitated');
+
+        $post->update($postData);
 
         return redirect()->route('posts.show', $post)->with('success', '¡Reseña actualizada exitosamente!');
     }
@@ -80,10 +90,25 @@ class PostController extends Controller
     {
         $post->delete();
 
-        // Tras borrar, lo mejor es llevar al admin a una página que siga existiendo.
         return redirect()->route('home')->with('success', '¡Reseña eliminada exitosamente!');
     }
+    public function toggleHabilitation(Post $post)
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
 
+
+        if (!$user || !$user->isAdmin()) {
+            abort(403, 'Acción no autorizada.');
+        }
+
+        $post->habilitated = !$post->habilitated;
+        $post->save();
+
+        $status = $post->habilitated ? 'habilitada' : 'deshabilitada';
+
+        return back()->with('success', "La reseña ha sido $status.");
+    }
 
     public function toggleLike(Post $post)
     {
@@ -97,7 +122,6 @@ class PostController extends Controller
 
     public function likedPosts()
     {
-        //le digo a intelliphense que $user es una instancia de User
         /** @var \App\Models\User $user */
         $user = Auth::user();
 

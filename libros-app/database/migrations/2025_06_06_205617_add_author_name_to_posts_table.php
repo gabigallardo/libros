@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            // Añadimos la columna 'author_name' de tipo string
-            // ->nullable() permite que los posts antiguos que no tienen autor no den error
-            // ->after('title') la coloca justo después de la columna de título para organizar mejor
+
             $table->string('author_name')->nullable()->after('title');
         });
     }

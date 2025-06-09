@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            // Añade la columna para la clave foránea
             $table->foreignId('category_id')
-                ->nullable() // Permite que un post no tenga categoría
-                ->after('id') // Coloca la columna después de la columna 'id'
-                ->constrained('categories') // Define la restricción de clave foránea
-                ->onDelete('set null'); // Si se borra una categoría, el post no se borra, solo se pone null
+                ->nullable()
+                ->after('id')
+                ->constrained('categories')
+                ->onDelete('set null');
         });
     }
 

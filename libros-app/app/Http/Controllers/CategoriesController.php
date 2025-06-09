@@ -27,11 +27,9 @@ class CategoriesController extends Controller
         $query = Category::query();
 
         if ($sort === 'posts_count') {
-            // Ordenar por la cantidad de posts.
             $query->withCount('posts')->orderBy('posts_count', 'desc');
         } elseif ($sort === 'likes') {
-            // Ordenar por la cantidad total de 'me gusta'.
-            // CORRECCIÓN: Usamos count(*) en lugar de count(post_user.id)
+
             $query->withCount(['posts as total_likes' => function ($query) {
                 $query->select(DB::raw('count(*) as likes_sum'))
                     ->join('post_user', 'posts.id', '=', 'post_user.post_id');
@@ -43,30 +41,20 @@ class CategoriesController extends Controller
         return view('category.index', compact('categories'));
     }
 
-    // ... (el resto de los métodos: show, create, store, etc., se quedan como están)
     public function show(Category $category, Request $request)
     {
         $sort = $request->query('sort');
 
-        // Empezamos la consulta de posts para esta categoría
         $postsQuery = $category->posts();
 
         if ($sort === 'stars') {
-            // Ordenar por la columna 'stars' de mayor a menor
             $postsQuery->orderBy('stars', 'desc');
         } elseif ($sort === 'likes') {
-            // Ordenar por la cantidad de 'me gusta'.
-            // withCount('likers') cuenta los registros en la relación 'likers'
-            // y crea una columna temporal 'likers_count'.
+
             $postsQuery->withCount('likers')->orderBy('likers_count', 'desc');
         } else {
-            // Orden por defecto: los más nuevos primero
             $postsQuery->latest();
         }
-
-        // Paginamos los resultados y
-        // con appends() nos aseguramos de que los links de paginación
-        // mantengan el criterio de ordenamiento.
         $posts = $postsQuery->paginate(9)->appends($request->query());
 
         return view('category.show', compact('category', 'posts'));

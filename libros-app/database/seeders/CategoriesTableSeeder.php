@@ -73,7 +73,6 @@ class CategoriesTableSeeder extends Seeder
             ],
         ];
 
-        // Agregamos timestamps y valores por defecto
         $categories = array_map(function ($categories) {
             return array_merge($categories, [
                 'posts_count' => 0,

@@ -17,20 +17,18 @@ class SearchController extends Controller
     {
         $term = $request->input('search');
 
-        // Si el término de búsqueda está vacío, no tiene sentido mostrar
-        // una página de resultados vacía. Mejor lo devolvemos al inicio.
+
         if (!$term) {
             return redirect()->route('home');
         }
 
-        // Si hay un término de búsqueda, realizamos la consulta
+
         $posts = Post::query()
             ->where('title', 'LIKE', "%{$term}%")
             ->orWhere('author_name', 'LIKE', "%{$term}%")
             ->paginate(12)
             ->appends($request->query());
 
-        // Devolvemos la vista con los resultados (o un mensaje de que no se encontró nada)
         return view('search.results', [
             'posts' => $posts,
             'term' => $term,

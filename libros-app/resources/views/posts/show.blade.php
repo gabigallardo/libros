@@ -71,6 +71,18 @@
                                         Eliminar
                                     </button>
                                 </form>
+                                <form action="{{ route('posts.toggleHabilitation', $post) }}" method="POST" class="flex-1">
+                                    @csrf
+                                    @if($post->habilitated)
+                                    <button type="submit" class="w-full px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition">
+                                        Deshabilitar
+                                    </button>
+                                    @else
+                                    <button type="submit" class="w-full px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
+                                        Habilitar
+                                    </button>
+                                    @endif
+                                </form>
                             </div>
                             @endif
                         </div>
@@ -103,7 +115,6 @@
                     </div>
                     @endif
 
-                    {{-- SECCIÓN DE COMENTARIOS --}}
                     <div class="mt-16">
                         <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
                             <h2 class="text-2xl font-bold text-gray-800 mb-6">Comentarios</h2>
@@ -125,7 +136,6 @@
 
                             <div class="mt-8 space-y-6">
                                 @forelse ($post->comments as $comment)
-                                {{-- CÓDIGO ACTUALIZADO PARA CADA COMENTARIO --}}
                                 <div x-data="{ editing: false }" class="flex space-x-4" id="comment-{{ $comment->id }}">
                                     <div class="flex-shrink-0">
                                         <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">
@@ -133,7 +143,6 @@
                                         </div>
                                     </div>
                                     <div class="flex-grow">
-                                        {{-- VISTA NORMAL DEL COMENTARIO --}}
                                         <div x-show="!editing">
                                             <div class="flex justify-between items-center">
                                                 <p class="font-bold text-gray-900">{{ $comment->user->name }}</p>
@@ -158,7 +167,6 @@
                                             </p>
                                         </div>
 
-                                        {{-- VISTA DE EDICIÓN --}}
                                         <div x-show="editing" x-cloak style="display: none !important;">
                                             <form action="{{ route('comments.update', $comment) }}" method="POST">
                                                 @csrf

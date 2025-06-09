@@ -7,6 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CommentController;
+
 
 // Ruta para la página de bienvenida para usuarios no autenticados
 Route::get('/', function () {
@@ -30,8 +32,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Rutas de recursos para Posts
     Route::resource('posts', PostController::class);
+    Route::post('/posts/{post}/toggle-habilitation', [PostController::class, 'toggleHabilitation'])->name('posts.toggleHabilitation');
+
 
     // Rutas de recursos para Categories
+
     Route::resource('categories', CategoriesController::class);
 
     // Rutas del perfil de usuario
@@ -39,15 +44,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-// ... en routes/web.php dentro del grupo 'auth'
 
-// Ruta para manejar el dar/quitar like
 Route::post('/posts/{post}/like', [PostController::class, 'toggleLike'])->name('posts.like');
 
-// Ruta para mostrar las publicaciones que le gustaron al usuario
 Route::get('/liked-posts', [PostController::class, 'likedPosts'])->name('posts.liked');
 
-use App\Http\Controllers\CommentController;
 
 Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
     ->middleware('auth')

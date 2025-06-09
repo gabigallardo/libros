@@ -9,7 +9,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('post_user', function (Blueprint $table) {
-            // Creamos una clave primaria combinada para eficiencia y evitar duplicados
             $table->primary(['user_id', 'post_id']);
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

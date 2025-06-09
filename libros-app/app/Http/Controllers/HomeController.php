@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -14,16 +15,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Obtener las 3 publicaciones con más "Me gusta"
-        $mostLikedPosts = Post::withCount('likers')
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        $query = Post::query();
+
+        if (!$user || !$user->isAdmin()) {
+            $query->where('habilitated', true);
+        }
+
+        $baseQuery = $query;
+
+        $mostLikedPosts = (clone $baseQuery)->withCount('likers')
             ->orderBy('likers_count', 'desc')
             ->limit(4)
             ->get();
 
-        // Obtener las 3 últimas publicaciones
-        $latestPosts = Post::latest()->limit(4)->get();
+        $latestPosts = (clone $baseQuery)->latest()->limit(4)->get();
 
-        //  Pasar los datos a la vista
         return view('home', [
             'mostLikedPosts' => $mostLikedPosts,
             'latestPosts' => $latestPosts,

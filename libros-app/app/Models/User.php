@@ -24,7 +24,6 @@ class User extends Authenticatable
         'role', // Añadir esta línea
     ];
 
-    // ... (resto de las propiedades) ...
 
     /**
      * Get the attributes that should be cast.

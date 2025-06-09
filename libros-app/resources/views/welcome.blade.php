@@ -16,10 +16,8 @@
         </div>
     </div>
 
-    {{-- Contenedor principal para las secciones de posts --}}
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        {{-- Sección de Posts Más Populares --}}
         @if($mostLikedPosts->count())
         <section class="mb-16">
             <h2 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-blue-500 pl-4">
@@ -27,14 +25,12 @@
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($mostLikedPosts as $post)
-                {{-- Usamos la nueva tarjeta para invitados --}}
                 @include('posts.partials.post-card-guest', ['post' => $post])
                 @endforeach
             </div>
         </section>
         @endif
 
-        {{-- Sección de Últimos Posts --}}
         @if($latestPosts->count())
         <section>
             <h2 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-indigo-500 pl-4">

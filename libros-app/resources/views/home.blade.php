@@ -1,5 +1,4 @@
 <x-app-layout>
-    {{-- Sección de Bienvenida con Estilo Celeste --}}
     <div class="bg-gradient-to-r from-sky-200 to-blue-400 py-16 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-4xl font-bold text-gray-800 sm:text-5xl mb-4">
@@ -14,13 +13,11 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            {{-- Sección de Posts Más Populares --}}
             @if($mostLikedPosts->count())
             <section class="mb-16">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-blue-500 pl-4">
                     Las Reseñas Más Populares
                 </h2>
-                {{-- CAMBIO AQUÍ: de lg:grid-cols-3 a lg:grid-cols-4 y de gap-8 a gap-6 --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($mostLikedPosts as $post)
                     @include('posts.partials.post-card', ['post' => $post])
@@ -29,13 +26,11 @@
             </section>
             @endif
 
-            {{-- Sección de Últimos Posts --}}
             @if($latestPosts->count())
             <section>
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-indigo-500 pl-4">
                     Novedades: Últimas Reseñas
                 </h2>
-                {{-- CAMBIO AQUÍ: de lg:grid-cols-3 a lg:grid-cols-4 y de gap-8 a gap-6 --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($latestPosts as $post)
                     @include('posts.partials.post-card', ['post' => $post])

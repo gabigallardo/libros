@@ -24,7 +24,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        // Si no es admin, redirige o muestra un error de prohibido.
         abort(403, 'Acceso no autorizado.');
     }
 }

@@ -48,7 +48,12 @@
                                     @endfor
                             </select>
                         </div>
-
+                        <div class="mb-4">
+                            <label for="habilitated" class="inline-flex items-center">
+                                <input type="checkbox" name="habilitated" id="habilitated" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" checked>
+                                <span class="ms-2 text-sm text-gray-600">Publicar como Habilitado</span>
+                            </label>
+                        </div>
                         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Guardar Post
                         </button>
