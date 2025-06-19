@@ -7,17 +7,17 @@
 La plataforma cuenta con dos roles principales, cada uno con funcionalidades específicas para crear una experiencia completa.
 
 #### Para Usuarios:
-* ✅ **Registro y Autenticación**: Sistema seguro de registro e inicio de sesión.
-* 🔍 **Búsqueda Avanzada**: Permite buscar reseñas por título del libro o nombre del autor.
-* 📂 **Exploración de Categorías**: Navega por las reseñas agrupadas en categorías, con la opción de ordenarlas por popularidad (más "Me Gusta") o por cantidad de posts.
-* ⭐ **Ordenamiento de Reseñas**: Dentro de cada categoría, las reseñas se pueden ordenar por calificación (estrellas) o por popularidad.
-* ❤️ **Interacción Social**:
+*  **Registro y Autenticación**: Sistema seguro de registro e inicio de sesión.
+*  **Búsqueda Avanzada**: Permite buscar reseñas por título del libro o nombre del autor.
+*  **Exploración de Categorías**: Navega por las reseñas agrupadas en categorías, con la opción de ordenarlas por popularidad (más "Me Gusta") o por cantidad de posts.
+*  **Ordenamiento de Reseñas**: Dentro de cada categoría, las reseñas se pueden ordenar por calificación (estrellas) o por popularidad.
+*  **Interacción Social**:
     * Deja **comentarios** en las reseñas para compartir tu opinión.
     * Marca tus publicaciones favoritas con un **"Me Gusta"**.
-* 🔖 **Lista de Favoritos**: Accede a un listado personal con todas las publicaciones a las que les has dado "Me Gusta".
+*  **Lista de Favoritos**: Accede a un listado personal con todas las publicaciones a las que les has dado "Me Gusta".
 
 #### Para Administradores:
-* 👑 **Gestión de Contenido**: Privilegios para **crear, editar y eliminar** tanto reseñas (posts) como categorías, asegurando la calidad y organización de la plataforma.
+*  **Gestión de Contenido**: Privilegios para **crear, editar y eliminar** tanto reseñas (posts) como categorías, asegurando la calidad y organización de la plataforma.
 
 ## 🛠️ Tecnologías Utilizadas
 
